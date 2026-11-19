@@ -1,4 +1,4 @@
-# web-snap-agent
+# Rivkit
 
 A React input bar that performs a goal on the page it is placed in. It reads the page as JSON, asks the server for the next action, performs it, and repeats.
 
@@ -31,11 +31,11 @@ After changing `client/src`, run `npm run build` in `client/` and restart the ex
 ## Use in another app
 
 ```bash
-npm install path/to/web-snap-agent/client
+npm install rivkit
 ```
 
 ```jsx
-import { AgentBar } from "web-snap-agent-react";
+import { AgentBar } from "rivkit";
 
 <AgentBar serverUrl="https://agent.example.com" apiKey="pk_..." />
 ```
@@ -47,7 +47,7 @@ Add the app's origin to `ALLOWED_ORIGINS` and its key to `CLIENT_KEYS` in `serve
 To build your own UI, use the hook instead:
 
 ```jsx
-import { useAgent } from "web-snap-agent-react";
+import { useAgent } from "rivkit";
 
 const { status, steps, error, running, run, stop } = useAgent({ serverUrl, apiKey });
 // run("goal text"), stop(). Put data-agent-ignore on your UI's root so the agent does not see it.

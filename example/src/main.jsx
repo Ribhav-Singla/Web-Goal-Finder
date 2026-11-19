@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { AgentBar } from "web-snap-agent-react";
+import { AgentBar } from "rivkit";
 
 // A small form for the agent to fill. Try: "Sign up as Asha, asha@example.com, plan Pro, accept terms and submit"
 function App() {
