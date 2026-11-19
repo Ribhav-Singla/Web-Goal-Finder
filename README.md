@@ -26,7 +26,7 @@ cd example && npm install && npm run dev   # http://localhost:5173
 
 Try: `Sign up as Asha, asha@example.com, plan Pro, accept the terms and submit`.
 
-After changing `client/src`, run `npm run build` in `client/` and restart the example.
+The example installs `rivkit` from npm. To try local changes to `client/src` before publishing, run `npm run build` in `client/`, then `npm install ../client` in `example/`.
 
 ## Use in another app
 
