@@ -1,2 +1,3 @@
-export { AgentBar } from "./AgentBar.jsx";
-export { runAgent } from "./runAgent.js";
+export { AgentBar } from "./components/AgentBar.jsx";
+export { useAgent } from "./useAgent.js";
+export { runAgent } from "./core/runAgent.js";
