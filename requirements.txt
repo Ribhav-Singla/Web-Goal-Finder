@@ -1,0 +1,1 @@
+# Nothing to install: act.py uses only the Python standard library (Python 3.10 or newer).
