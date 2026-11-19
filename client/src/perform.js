@@ -1,8 +1,6 @@
-// Runs inside the page. Performs ONE action chosen from the last snapshot.
-// `action` is what act.py returned: { operation, target, text, option }.
-// `target` is an element index from the snapshot JSON; snapshot.js kept the matching DOM nodes.
-// Returns { ok: true } or { ok: false, error }.
-async function perform(action) {
+// Performs ONE action chosen by the server. From extension/perform.js.
+// `nodes` comes from the snapshot the action was chosen from. Returns { ok: true } or { ok: false, error }.
+export async function perform(action, nodes) {
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const operation = action.operation;
 
@@ -13,7 +11,7 @@ async function perform(action) {
     return scrollY === before ? { ok: false, error: "The page did not scroll" } : { ok: true };
   }
 
-  const node = (globalThis.__webSnapNodes || [])[action.target - 1];
+  const node = nodes[action.target - 1];
   if (!node || !node.isConnected) return { ok: false, error: "The element is no longer on the page" };
   node.scrollIntoView({ block: "center", inline: "center", behavior: "instant" });
   await sleep(60);

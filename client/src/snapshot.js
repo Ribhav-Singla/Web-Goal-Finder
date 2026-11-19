@@ -1,9 +1,11 @@
-// Runs inside the page. Returns the complete page state as plain JSON.
-(() => {
-  if (!document.body) return null;
+// Reads the page as plain JSON. From extension/snapshot.js.
+// Anything inside [data-agent-ignore] (the agent bar itself) is left out.
+// Returns { state, nodes }: nodes[index - 1] is the DOM node of element `index`.
+export function snapshot() {
+  if (!document.body) throw new Error("The page has no body");
 
   const visible = (e) =>
-    !e.closest('[aria-hidden="true"],[inert]') &&
+    !e.closest("[aria-hidden=\"true\"],[inert],[data-agent-ignore]") &&
     e.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true });
 
   // Accessible name, the way a screen reader would announce the element.
@@ -170,8 +172,6 @@
     elements.push(item);
     nodes.push(e);
   }
-  // Kept so an action chosen from this JSON can be performed on the same node (extension/perform.js).
-  globalThis.__webSnapNodes = nodes;
 
   // Headings give the page outline.
   const headings = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6,[role=heading]")]
@@ -180,7 +180,11 @@
     .map((h) => ({ level: Number(h.getAttribute("aria-level") || h.tagName[1]) || null, text: h.innerText.trim().replace(/\s+/g, " ") }))
     .filter((h) => h.text);
 
-  return {
+  // Rendered text, without the agent bar's own text.
+  let text = popup ? popupRoots.map((root) => root.innerText).join("\n") : document.body.innerText;
+  for (const own of document.querySelectorAll("[data-agent-ignore]")) text = text.replace(own.innerText, "");
+
+  const state = {
     url: location.href,
     title: document.title,
     lang: document.documentElement.lang || null,
@@ -190,6 +194,7 @@
     popup: popup ? { open: true, hidden_behind: hiddenBehindPopup } : { open: false },
     headings,
     elements,
-    text: popup ? popupRoots.map((root) => root.innerText).join("\n") : document.body.innerText, // rendered text
+    text,
   };
-})()
+  return { state, nodes };
+}
